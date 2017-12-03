@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>VPN Comparison</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="jumbotron text-center">
+      <h1>
+        <strong>VPN Comparison Dashboard</strong>
+      </h1>
+      <p>Use the interactive charts below to explore the dataset
+      </p>
+    </div>
+
+    <div class="container" style="width:1100px">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="row">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <b>SELECT VPN:</b>
+                  </div>
+                  <div class="panel-body">
+                    <select id="samplesDropdown" onchange="optionChanged(this.value)">
+                      <!-- <select id="samplesDropdown" onchange=""> -->
+                      </select>
+                  </div>
+                </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <b>Details</b>
+              </div>
+              <div class="panel-body" id="table" style="font-size:10px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" id="pie">
+
+        </div>
+        <div class="col-md-4" id="gauge">
+
+        </div>
+
+      </div>
+    </div>
+      <div class="container" style="width:1000px">
+        <div class="col-md-12" id="scatterPlot">
+        </div>
+      </div>
+  </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.3/d3.min.js"></script>
+  <script type="text/javascript" src="static/index.js"></script>
+</body>
+
+</html>
