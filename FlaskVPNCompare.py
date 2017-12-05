@@ -31,8 +31,19 @@ session = Session(engine)
 @app.route("/")
 def default():
 
-
     return render_template("index.html")
+
+# Route to render simpleComparison html page
+@app.route("/simpleComparison")
+def default1():
+
+    return render_template("dataTables.html")
+
+# Default route to charts html page
+@app.route("/charts")
+def default2():
+
+    return render_template("chartJS.html")
 
 # Route to get the list of all VPNs
 @app.route('/vpnNames', methods=['POST','GET'])
@@ -41,16 +52,35 @@ def vpnNames():
     vpnNames = session.query(vpnMaster.VPN_SERVICE).all()
     vpnNamesArr = []
     for x in vpnNames:
-        # print(x[0])
         vpnNamesArr.append(x[0])
 
     return jsonify(vpnNamesArr)
 
-# Route to get the metadata for a specific VPN
-@app.route('/metadata/<sample>', methods=['POST','GET'])
-def metadata(sample):
+# Route to get simpleComparison Data
+@app.route('/simpleCompareData', methods=['POST','GET'])
+def simpleCompareData():
 
-    results = session.query(vpnMaster).filter(vpnMaster.VPN_SERVICE == sample).all()
+    allData = session.query(vpnMaster).all()
+    list1 = []
+    for x in allData:
+        dict2 = {}
+        for k,v in x.__dict__.items():
+            if(("_sa_instance_state" != k)):
+                if('index' in k or 'Unnamed:_10' in k or 'index' in k):
+                    pass
+                elif('Jurisdiction' in k or 'VPN_SERVICE' in k or 'Logging' == k or 'Activism' in k or 'Service_Config' in k or 'Security' in k or 'Availability' in k or 'Website' in k or 'Pricing' == k or 'Ethics' in k):
+                    dict2[k] = v
+                    
+        list1.append(dict2)
+
+    return jsonify(list1)
+
+
+# Route to get the metadata for a specific VPN
+@app.route('/vpnData/<vpnName>', methods=['POST','GET'])
+def vpnData(vpnName):
+
+    results = session.query(vpnMaster).filter(vpnMaster.VPN_SERVICE == vpnName).all()
 
     dict1 = {}
     for k,v in results[0].__dict__.items():
@@ -76,26 +106,23 @@ def getColumns():
     results = session.query(vpnMaster).all()
 
     dict1 = {}
-    availability, vpnServiceProvider, noOfCountries, noOfServers = [], [], [], []
+    colList = []
+    
+    for k,v in results[0].__dict__.items():
+        if(("_sa_instance_state" != k)):
+            colList.append(k)
+ 
+    for i in colList:
+        dict1[i] = []
+
     for x in results:
         y = x.__dict__
         for k,v in y.items():
-            if("VPN_SERVICE" in k):
-                vpnServiceProvider.append(v)
-            if("Availability" in k):
-                availability.append(v)
-            if("#_of_Countries" in k):
-                noOfCountries.append(v)
-            if("#_of_Servers" in k):
-                noOfServers.append(v)
-
-    dict1['VPN_SERVICE'] = vpnServiceProvider
-    dict1['Availability'] = availability
-    dict1['Number_of_Countries'] = noOfCountries
-    dict1['Number_of_Servers'] = noOfServers
+            if(("_sa_instance_state" != k)):
+                dict1[k].append(v)
+    
     
     return jsonify(dict1)
-
 
 
 
