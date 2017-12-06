@@ -39,6 +39,14 @@ def default1():
 
     return render_template("dataTables.html")
 
+
+# Route to render simpleComparison html page
+@app.route("/d3bubble")
+def d3bubble():
+
+    return render_template("d3bubble.html")
+
+
 # Default route to charts html page
 @app.route("/charts")
 def default2():

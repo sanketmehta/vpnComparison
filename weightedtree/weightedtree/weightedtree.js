@@ -50,8 +50,7 @@ var formatCurrency = function (d) { if (isNaN(d)) d = 0; return "$" + d3.format(
 
 function loadData() {
 
-    d3.csv("data/weightedtree_federal_budget.csv", function (csv) {       
-
+    d3.csv("data/vpnCompData_Nov22_test.csv", function (csv) { 
         data.values=prepData(csv);
 
         console.log(data.values);
@@ -65,6 +64,7 @@ function loadData() {
 }
 
 function prepData(csv) {
+
     console.log(csv);
 
     var values=[];
@@ -80,24 +80,34 @@ function prepData(csv) {
         }
     })
 
+    console.log("test1");
+    
+
     //Make our data into a nested tree.  If you already have a nested structure you don't need to do this.
     var nest = d3.nest()
         .key(function (d) {
+            // console.log(d.Jurisdiction);
             return d.Level1;
         })
         .key(function (d) {
+            // console.log(d.Logging);
             return d.Level2;
         })
         .key(function (d) {
+            // console.log(d.Pricing);
             return d.Level3;
         })
         .entries(values);
 
+    console.log(nest);
+    console.log("test2");
 
     //This will be a viz.data function;
     vizuly.core.util.aggregateNest(nest, valueFields, function (a, b) {
         return Number(a) + Number(b);
     });
+
+    console.log("test3");
 
     //Remove empty child nodes left at end of aggregation and add unqiue ids
     function removeEmptyNodes(node,parentId,childId) {
