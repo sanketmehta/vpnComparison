@@ -1,6 +1,54 @@
-drawbubble();
 
-function drawbubble() {
+// createBubble();
+
+function generateColor(x) {
+  var color = [];
+
+    // color.push(256 -x);
+
+    // if (x <= 255 ){
+    // 	color.push(x);
+    // } else {
+    // 	color.push(x - 255);
+    // }
+
+    // value3 = x*2;
+    // if (value3 <= 255){
+    // 	color.push(value3)
+    // } else {
+    // 	color.push(value3-255)
+    // };
+  for (var i = 0; i < 3; i++) {
+    color.push(Math.floor(Math.random() * 256));
+  }
+  return 'rgb(' + color.join(',') + ')';
+}
+
+function updateVPNInfo(vpn) {
+      var info = "";
+      if (vpn) {
+      	var metahead = document.querySelector("#vpnname");
+		metahead.innerHTML = vpn.Category;
+
+		// var meta = document.querySelector("#vpn-info");
+		// metadata.innerHTML = "";
+
+		// for(var key in data) {
+		//   	var value = data[key];
+		//   	console.log(key + ": " +  value);
+		//   	var para = document.createElement("P");                       // Create a <p> element
+		// 	var t = document.createTextNode(key + ": " +  value);      // Create a text node
+		// 	para.appendChild(t);                                          // Append the text to <p>
+		// 	meta.appendChild(para);           // Append <p> to <div> with id="myDIV"
+		// }
+
+        info = ["Country", vpn.Country].join(": ");
+      }
+      d3.select("#metadata").html(info);
+    }
+
+
+function createBubble(err, datapoints) {
   // if the SVG area isn't empty when the browser loads, remove it and replace it with a resized version of the chart
   var svgArea = d3.select("body").select("svg");
   
@@ -71,19 +119,33 @@ function drawbubble() {
 		return radiusScale(d.Jurisdiction) + 5
 	})
 
+
+
   var simultation = d3.forceSimulation()
   	.force("x",forceXCombine)
   	.force("y", forceYCombine)
   	.force("collide", forceCollide)
 
-  d3.queue()
-     .defer(d3.csv, "../../data/vpnCompData_Nov22_test.csv")
-     .await(ready);
+  // d3.queue()
+  //    .defer(d3.csv, "../../data/vpnCompData_Nov22_test.csv")
+  //    .await(ready);
   
 
   // d3.csv("vpnTest.csv", function(datapoints){
-  function ready (err, datapoints){
-  	// console.log(datapoints[0]);
+  // function ready (err, datapoints){
+  	console.log(datapoints.length);
+
+  	var countries = d3.map(datapoints, function(d){return d.Country;}).keys()
+  	var colors = {};
+
+  	countries.forEach(function (e, i) {
+  		console.log(e);
+  		colors[e] = generateColor(i);
+	});
+
+	console.log(colors);
+	console.log(colors['Australia']);
+
   	var rmin = d3.min(datapoints, function(d) {
 	  return parseFloat(d["Jurisdiction"]);
 		});
@@ -109,19 +171,28 @@ function drawbubble() {
 	  		.attr("id", function(d){
 	  			return d.Category.toLowerCase().replace(/ /g, "_")
 	  		})
-	  		.attr("fill", "lightblue")
+	  		// .attr("fill", "lightblue")
+	  		.attr("fill", function(d){
+	  			return colors[d.Country];
+	  		})
+
 	  	.on("click", function(d){
+	  		// updateVPNInfo(d);
 	  		console.log(d["Category"])
-	  	});
+	  	})
+	  	// .on("mouseover", function(d) {
+    //       updateVPNInfo(d);
+    //     })
+    //     .on("mouseout", function(d) {
+    //       updateVPNInfo(d);
+    //     });
 
 	d3.select("#split").on("click", function(){
 		//  need to find how many distinct datapoints there are
 	  simultation
 			.force("x", forceXSplit)
-			// .force("y", forceYSplit)
 			.alphaTarget(0.25)
 			.restart()
-
 	})
 		
 
@@ -145,7 +216,7 @@ function drawbubble() {
   		   	 return d.y;
   		   })
   	}
-  }
+  // }
 
   // });
 
