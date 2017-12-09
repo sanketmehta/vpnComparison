@@ -1,20 +1,14 @@
 <!DOCTYPE html>
-<meta charset='utf-8'>
 <html>
 
-<head>
-
-	<!-- Custom CSS -->
-	<!-- <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="assets/css/d3Style.css") }}'> -->
-	<!-- <link rel="stylesheet" href="../assets/css/d3Style.css"> -->
-
+<head>	
+	<meta charset='utf-8'>
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
 	<!-- Bootstrap CDN -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../static/d3bubble.css">
-	<!-- Custom CSS -->
-	<!-- <link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="assets/css/d3Style.css") }}'> -->
-
-
+	
 	<!-- d3 scripts -->
 	<script src="https://d3js.org/d3.v4.js"></script>
 	<script src="https://d3js.org/d3-queue.v3.min.js"></script>
@@ -25,7 +19,7 @@
 	<script src="https://d3js.org/d3-force.v1.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> -->
 	<!-- <script src="https://d3js.org/d3.v4.js"></script> -->
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 </head>
 
 <body>
@@ -178,9 +172,18 @@
 						</select>
 					</label>
 	
-			</div>
+			</div>			
 			<div class="row">
-				<div class="col-xs-12  col-md-9">
+				<div class="col-xs-3  col-md-2">
+	  				<div id="metabox" class="panel panel-primary">
+						<div id="metahead" class="panel-heading text-center">
+							<p>VPN Summary</p>							
+	  					</div>
+	  					<div class="panel-body" id="metadata">
+	  					</div>
+	  				</div>
+				</div>
+				<div class="col-xs-6 col-md-10">
 					<div class="chart">
 
 					</div>

@@ -32,6 +32,13 @@ session = Session(engine)
 def default():
 
     return render_template("index.html")
+    # Default route to render index.html
+
+@app.route("/d3bubble")
+def bubble():
+
+    return render_template("d3bubble.html")
+
 
 # Route to render simpleComparison html page
 @app.route("/simpleComparison")

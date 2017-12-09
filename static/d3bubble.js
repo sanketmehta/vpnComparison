@@ -12,33 +12,49 @@ function generateColor(x) {
 	return 'rgb(' + color.join(',') + ')';
   }
   
-  function updateVPNInfo(vpn) {
-		var info = "";
-		if (vpn) {
-			var metahead = document.querySelector("#vpnname");
-		  metahead.innerHTML = vpn.Category;
-  
-		  // var meta = document.querySelector("#vpn-info");
-		  // metadata.innerHTML = "";
-  
-		  // for(var key in data) {
-		  //   	var value = data[key];
-		  //   	console.log(key + ": " +  value);
-		  //   	var para = document.createElement("P");                       // Create a <p> element
-		  // 	var t = document.createTextNode(key + ": " +  value);      // Create a text node
-		  // 	para.appendChild(t);                                          // Append the text to <p>
-		  // 	meta.appendChild(para);           // Append <p> to <div> with id="myDIV"
-		  // }
-  
-		  info = ["Country", vpn.Country].join(": ");
-		}
-		d3.select("#metadata").html(info);
+function updateVPNInfo(vpn, type) {
+	var metahead = document.querySelector("#metahead");	
+	var metadata = document.querySelector("#metadata");
+	metadata.innerHTML = "";
+
+	if (vpn) {	
+	  if (type === "detail"){
+	  	metahead.innerHTML = vpn["VPN SERVICE"];
+	  } else {
+	  	metahead.innerHTML = "VPN Summary"; 
 	  }
+
+	  for(var key in vpn) {
+	  	switch (key){
+	  		case "VPN SERVICE":
+	  		case "index":
+	  		case "vx":
+	  		case "vy":
+	  		case "x":
+	  		case "y":
+	  			break;
+	  		default:
+		    	var value = vpn[key];
+			    addTextToMetadata(key, value, metadata);
+	  			break;
+	  	}
+	  }
+	} 
+}
+
+function addTextToMetadata(label, text, metadata){
+	console.log(label + ": " +  text);
+	var para = document.createElement("p");                // Create a <p> element
+  	var t = document.createTextNode(label + ": " +  text);  // Create a text node
+  	para.appendChild(t);                                   // Append the text to <p>
+  	metadata.appendChild(para);  
+}
   
 function drawbubble(err, datapoints) {
 	// if the SVG area isn't empty when the browser loads, remove it and replace it with a resized version of the chart
 
 	var allSelections;
+	var summaryData = {};
 
 	var svgArea = d3.select("body").select("svg");
 
@@ -64,10 +80,34 @@ function drawbubble(err, datapoints) {
 		.append("g")
 		.attr("transform", "translate(0,0)");
 
-	var forceXCombine = d3.forceX(function (d) {
-		return svgWidth / 2
-	}).strength(0.05)
+	// Initialize tooltip
+	  var toolTip = d3
+	    .tip()
+	    .attr("class", "d3-tip")
+	    // Define position
+	    .offset([20, -20])
+	    // The html() method allows us to mix JavaScript with HTML in the callback function
+	    .html(function(d) {
+	      	var vpnName = d['VPN SERVICE'];
+	      	var country = d['Country'];
+		    var jurisdiction = +d['Jurisdiction'];
+		    var logging = +d['Logging'];
+		    var activism = +d['Activism']
+		    return "<h3 id='tooltip-header'>" + vpnName +
+		        "</h3><hr>" +
+		        country + "<br>" +
+		        ["Jurisdiction", jurisdiction].join(": ") +
+		        "<br>" +		        
+		        ["Logging", logging].join(": ") +
+		        "<br>" +		        
+		        ["Activism", activism].join(": ");
+	    });
 
+	svg.call(toolTip);
+
+	var forceXCombine = d3.forceX(function (d) {
+		return ((svgWidth/6)*5)/ 2
+	}).strength(0.05)
 
 	var forceYCombine = d3.forceY(function (d) {
 		return svgHeight / 2
@@ -124,18 +164,25 @@ function drawbubble(err, datapoints) {
 		return svgHeight / 2
 	}).strength(0.05)
 
+	console.log(datapoints.length);
 
   	var countries = d3.map(datapoints, function(d){return d.Country;}).keys()
+
+  	summarydata = {
+  		"Total Countries": countries.length,
+  		"Total VPNs": datapoints.length 
+  	}
+
+  	// pass summary information
+  	updateVPNInfo(summarydata,"summary");
+
   	var colors = {};
 
   	countries.forEach(function (e, i) {
-  		console.log(e);
   		colors[e] = generateColor(i);
 	});
 
-	console.log(colors);
-	console.log(colors['Australia']);
-
+	
 		var rmin = d3.min(datapoints, function (d) {
 			return parseFloat(d["Jurisdiction"]);
 		});
@@ -173,7 +220,17 @@ function drawbubble(err, datapoints) {
 			})
 			.on("click", function (d) {
 		  		// updateVPNInfo(d);
-			  console.log(d["VPN SERVICE"])
+			  toolTip.show(d);
+			})
+			.on("mouseover", function (d) {
+		      // show vpn details
+		  	  updateVPNInfo(d, "detail");
+			})		
+			.on("mouseout", function (d) {
+		  	  
+			  // pass summary information
+			  updateVPNInfo(summarydata,"summary");
+			  toolTip.hide(d);
 			});
 
 
