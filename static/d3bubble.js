@@ -62,8 +62,9 @@ function drawbubble(err, datapoints) {
 		svgArea.remove();
 	}
 
-	var svgWidth = window.innerWidth;
-	var svgHeight = window.innerHeight;
+	var svgWidth = window.innerWidth *4/5;
+	var svgHeight = window.innerHeight *4/5;
+	// console.log(svgWidth);
 
 	// set up margin and chart dimensions
 	var margin = { top: 100, right: 20, bottom: 100, left: 80 };
@@ -106,11 +107,14 @@ function drawbubble(err, datapoints) {
 	svg.call(toolTip);
 
 	var forceXCombine = d3.forceX(function (d) {
-		return ((svgWidth/6)*5)/ 2
+		return svgWidth/2
+		// return ((svgWidth/7)*5)/ 2
+	// }).strength(0.05)
 	}).strength(0.05)
 
 	var forceYCombine = d3.forceY(function (d) {
 		return svgHeight / 2
+	// }).strength(0.5)
 	}).strength(0.5)
 
 	var forceCollide = d3.forceCollide(function (d) {
@@ -128,19 +132,19 @@ function drawbubble(err, datapoints) {
 
 	var forceXSplit = d3.forceX(function (d) {
 
-		categoryArr = [];
-		subCategoryArr = [];
+		// categoryArr = [];
+		// subCategoryArr = [];
 
-		remainingSelections = allSelections;
+		// remainingSelections = allSelections;
 
-		for (i = 0; i < (allSelections.match(/;/g) || []).length; i++) {
+		// for (i = 0; i < (allSelections.match(/;/g) || []).length; i++) {
 
-			currentSelection = remainingSelections.substring(0, remainingSelections.indexOf(";"));
-			remainingSelections = remainingSelections.substring(remainingSelections.indexOf(";") + 1, remainingSelections.length);
-			categoryArr.push(currentSelection.substring(0, currentSelection.indexOf("-")));
-			subCategoryArr.push(currentSelection.substring(currentSelection.indexOf("-") + 1, currentSelection.length));
+		// 	currentSelection = remainingSelections.substring(0, remainingSelections.indexOf(";"));
+		// 	remainingSelections = remainingSelections.substring(remainingSelections.indexOf(";") + 1, remainingSelections.length);
+		// 	categoryArr.push(currentSelection.substring(0, currentSelection.indexOf("-")));
+		// 	subCategoryArr.push(currentSelection.substring(currentSelection.indexOf("-") + 1, currentSelection.length));
 
-		}
+		// }
 
 		if (((((d[categoryArr[0]] >= (parseFloat(subCategoryArr[0]))) && (d[categoryArr[0]] < (parseFloat(subCategoryArr[0]) + 0.5)))) || parseFloat(subCategoryArr[0]) == 99) &&
 			((((d[categoryArr[1]] >= (parseFloat(subCategoryArr[1]))) && (d[categoryArr[1]] < (parseFloat(subCategoryArr[1]) + 0.5)))) || parseFloat(subCategoryArr[1]) == 99) &&
@@ -153,19 +157,69 @@ function drawbubble(err, datapoints) {
 			((((d[categoryArr[8]] >= (parseFloat(subCategoryArr[8]))) && (d[categoryArr[8]] < (parseFloat(subCategoryArr[8]) + 0.5)))) || parseFloat(subCategoryArr[8]) == 99)
 		) {
 			return svgWidth / 2;
-			// return 300;
 		} else {
-			return 3000;
+			return 4000;
 		}
 
-	}).strength(0.04)
+	}).strength(0.008)
 
 	var forceYSplit = d3.forceY(function (d) {
 		return svgHeight / 2
-	}).strength(0.05)
+	}).strength(0.02)
 
 	console.log(datapoints.length);
 
+	setfilterArrays();
+	
+		function sorter(a, b) {
+			return a - b;
+		}
+		
+		
+		function setfilterArrays() {
+	
+			var filtersArr = ["Jurisdiction", "Logging", "Activism", "ServiceConfig", "Security", "Availability", "Website", "Pricing", "Ethics"]
+	
+			d3.selectAll(".option")
+				.remove();
+		
+			for (var j = 0; j < filtersArr.length; j++) {
+		
+				dropDwnName = filtersArr[j];
+		
+				if (filtersArr[j] == "ServiceConfig") {
+					dropDwnNameVal = "Service Config";
+				}
+				else {
+					dropDwnNameVal = filtersArr[j];
+				}
+		
+				if (filtersArr[j] == "Website") {
+					eval('var unique' + dropDwnName + 'Values = d3.map(datapoints, function(d){return parseFloat(d["' + dropDwnNameVal + '"]);}).keys().sort(sorter)');
+				}
+				else {
+					eval('var unique' + dropDwnName + 'Values = d3.map(datapoints, function(d){return parseFloat(d["' + dropDwnNameVal + '"]);}).keys().sort()');
+				}
+		
+				eval('unique' + dropDwnName + 'Values.unshift(unique' + dropDwnName + 'Values.pop())');
+		
+		
+				for (var i = 0; i < eval('unique' + dropDwnName + 'Values').length; i++) {
+					val = eval('unique' + dropDwnName + 'Values')[i];
+					txt = eval('unique' + dropDwnName + 'Values')[i];
+					if (isNaN(val)) {
+						val = "99";
+						txt = "All"
+					}
+					d3.select("#" + dropDwnName + "Dropdown").append("option")
+						.attr("class", "option")
+						.attr("value", dropDwnNameVal + "-" + val)
+						.text(txt);
+				}
+		
+			}
+		}
+	
   	var countries = d3.map(datapoints, function(d){return d.Country;}).keys()
 
   	summarydata = {
@@ -254,25 +308,58 @@ function drawbubble(err, datapoints) {
 			d3.selectAll(".dropdown")
 				.filter(function (d, i) {
 					allSelections = allSelections + this.value + ";";
-
+	
 				});
-			simultation
-				.force("x", forceXSplit)
-				.force("y", forceYSplit)
-				.force("collide", forceSplit)
-				.alphaTarget(0.5)
-				.restart()
+	
+			categoryArr = [];
+			subCategoryArr = [];
+	
+			remainingSelections1 = allSelections;
+	
+			for (i = 0; i < (allSelections.match(/;/g) || []).length; i++) {
+	
+				currentSelection1 = remainingSelections1.substring(0, remainingSelections1.indexOf(";"));
+				remainingSelections1 = remainingSelections1.substring(remainingSelections1.indexOf(";") + 1, remainingSelections1.length);
+				categoryArr.push(currentSelection1.substring(0, currentSelection1.indexOf("-")));
+				subCategoryArr.push(currentSelection1.substring(currentSelection1.indexOf("-") + 1, currentSelection1.length));
+	
+			}
+	
+			if ((parseFloat(subCategoryArr[0]) == 99) && (parseFloat(subCategoryArr[1]) == 99) &&
+				(parseFloat(subCategoryArr[2]) == 99) && (parseFloat(subCategoryArr[3]) == 99) &&
+				(parseFloat(subCategoryArr[4]) == 99) && (parseFloat(subCategoryArr[5]) == 99) &&
+				(parseFloat(subCategoryArr[6]) == 99) && (parseFloat(subCategoryArr[7]) == 99) &&
+				(parseFloat(subCategoryArr[8]) == 99)
+			) {
+				simultation
+					.force("x", forceXCombine)
+					.force("y", forceYCombine)
+					.force("collide", forceCollide)
+					.alphaTarget(0.008)
+					.restart()
+			}
+			else {
+				simultation
+					.force("x", forceXSplit)
+					.force("y", forceYSplit)
+					.force("collide", forceSplit)
+					.alphaTarget(0.7)
+					.restart()
+			}
+	
+
 		})
 
 
-		d3.select("#allvpn").on("click", function () {
-			simultation
-				.force("x", forceXCombine)
-				.force("y", forceYCombine)
-				.force("collide", forceCollide)
-				.alphaTarget(0.01)
-				.restart()
-		})
+	d3.select("#allvpn").on("click", function () {
+		setfilterArrays();
+		simultation
+			.force("x", forceXCombine)
+			.force("y", forceYCombine)
+			.force("collide", forceCollide)
+			.alphaTarget(0.008)
+			.restart()
+	})
 
 
 }

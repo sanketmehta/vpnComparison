@@ -6,6 +6,8 @@
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<!-- Bootstrap CDN -->
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">     -->
+	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../static/d3bubble.css">
 	
@@ -28,152 +30,138 @@
 			<br>
 			<div class="row">
 				<!-- <div class="col-md-3"> -->
-				<button class="btn btn-primary btn-md" id="allvpn">All VPN</button>
+				<!-- <button class="btn btn-primary btn-md" id="allvpn">All VPN</button> -->
 				<!-- </div> -->
-			<!-- </div>
+				<!-- </div>
 			<br>
 			<div class="row"> -->
 				<!-- <br> -->
-				<label for="Jurisdiction">
+				<!-- <label for="Jurisdiction">
 					Jurisdiction
 					<br>
-					<select id="samplesDropdown" class="dropdown">
-						<option value="Jurisdiction-99">All</option>
-						<option value="Jurisdiction-0">0</option>
-						<option value="Jurisdiction-1">1</option>
-						<option value="Jurisdiction-2">2</option>
-						<option value="Jurisdiction-3">3</option>
-						<option value="Jurisdiction-4">4</option>
-						<option value="Jurisdiction-5">5</option>
+					<select id="JurisdictionDropdown" class="dropdown">
 					</select>
-				</label>
-				<label for="Logging">
+				</label> -->
+				<button type="button" class="btn btn-primary JurisdictionButton">
+					Jurisdiction
+					<br>
+				</button>
+				<button type="button" class="btn btn-primary LoggingButton">
 					Logging
 					<br>
-					<select id="samplesDropdown1" class="dropdown">
-						<option value="Logging-99">All</option>
-						<option value="Logging-0">0</option>
-						<option value="Logging-0.5">0.5</option>
-						<option value="Logging-1">1</option>
-						<option value="Logging-1.5">1.5</option>
-						<option value="Logging-2">2</option>
-						<option value="Logging-3">3</option>
-						<option value="Logging-4">4</option>
-						<option value="Logging-5">5</option>
+				</button>
+				<button type="button" class="btn btn-primary ActivismButton">
+					Activism
+					<br>
+				</button>
+				<button type="button" class="btn btn-primary ServiceConfigButton">
+					Service Config
+					<br>
+				</button>
+				<button type="button" class="btn btn-primary SecurityButton">
+					Security
+					<br>
+				</button>
+				<button type="button" class="btn btn-primary AvailabilityButton">
+					Availability
+					<br>
+				</button>
+				<button type="button" class="btn btn-primary WebsiteButton">
+					Website
+					<br>
+				</button>
+				<button type="button" class="btn btn-primary PricingButton">
+					Pricing
+					<br>
+				</button>
+				<button type="button" class="btn btn-primary EthicsButton">
+					Ethics
+					<br>
+				</button>
+				
+				<!-- <label for="Jurisdiction">
+					Jurisdiction
+					<br>
+					<select id="JurisdictionDropdown" class="dropdown">
 					</select>
+				</label> -->
+				<!-- <label for="Logging">
+					Logging
+					<br>
 				</label>
 				<label for="Activism">
 					Activism
 					<br>
-					<select id="samplesDropdown" class="dropdown">
-						<option value="Activism-99">All</option>
-						<option value="Activism-0">0</option>
-						<option value="Activism-1">1</option>
-						<option value="Activism-2">2</option>
-						<option value="Activism-3">3</option>
-						<option value="Activism-4">4</option>
-						<option value="Activism-5">5</option>
+					<select id="ActivismDropdown" class="dropdown">
 					</select>
 				</label>
 				<label for="Service Config">
 					Service Config
 					<br>
-					<select id="samplesDropdown1" class="dropdown">
-						<option value="Service Config-99">All</option>
-						<option value="Service Config-0">0</option>
-						<option value="Service Config-0.5">0.5</option>
-						<option value="Service Config-0">1</option>
-						<option value="Service Config-1.5">1.5</option>
-						<option value="Service Config-2">2</option>
-						<option value="Service Config-3">3</option>
-						<option value="Service Config-4">4</option>
-						<option value="Service Config-5">5</option>
+					<select id="ServiceConfigDropdown" class="dropdown">
 					</select>
 				</label>
 				<label for="Security">
 					Security
 					<br>
-					<select id="samplesDropdown1" class="dropdown">
-						<option value="Security-99">All</option>
-						<option value="Security-0">0</option>
-						<option value="Security-0.5">0.5</option>
-						<option value="Security-0">1</option>
-						<option value="Security-1.5">1.5</option>
-						<option value="Security-2">2</option>
-						<option value="Security-2.5">2.5</option>
-						<option value="Security-3">3</option>
-						<option value="Security-4">4</option>
-						<option value="Security-5">5</option>
+					<select id="SecurityDropdown" class="dropdown">
 					</select>
 				</label>
 				<label for="Availability">
 					Availability
 					<br>
-					<select id="samplesDropdown" class="dropdown">
-						<option value="Availability-99">All</option>
-						<option value="Availability-0">0</option>
-						<option value="Availability-1">1</option>
-						<option value="Availability-2">2</option>
-						<option value="Availability-3">3</option>
-						<option value="Availability-4">4</option>
-						<option value="Availability-5">5</option>
+					<select id="AvailabilityDropdown" class="dropdown">
 					</select>
 				</label>
 				<label for="Website">
 					Website
 					<br>
-					<select id="samplesDropdown" class="dropdown">
-						<option value="Website-99">All</option>
-						<option value="Website-0">0</option>
-						<option value="Website-1">1</option>
-						<option value="Website-2">2</option>
-						<option value="Website-3">3</option>
-						<option value="Website-4">4</option>
-						<option value="Website-5">5</option>
-						<option value="Website-6">6</option>
-						<option value="Website-7">7</option>
-						<option value="Website-8">8</option>
-						<option value="Website-9">9</option>
-						<option value="Website-10">10</option>
-						<option value="Website-11">11</option>
-						<option value="Website-12">12</option>
-						<option value="Website-13">13</option>
-						<option value="Website-14">14</option>
-						<option value="Website-15">15</option>
-						<option value="Website-17">17</option>
+					<select id="WebsiteDropdown" class="dropdown">
 					</select>
 				</label>
 				<label for="Pricing">
 					Pricing
 					<br>
-					<select id="samplesDropdown" class="dropdown">
-						<option value="Pricing-99">All</option>
-						<option value="Pricing-0">0</option>
-						<option value="Pricing-1">1</option>
-						<option value="Pricing-2">2</option>
-						<option value="Pricing-3">3</option>
-						<option value="Pricing-4">4</option>
-						<option value="Pricing-5">5</option>
+					<select id="PricingDropdown" class="dropdown">
 					</select>
 				</label>
 				<label for="Ethics">
-						Ethics
-						<br>
-						<select id="samplesDropdown1" class="dropdown">
-							<option value="Ethics-99">All</option>
-							<option value="Ethics-0">0</option>
-							<option value="Ethics-0.5">0.5</option>
-							<option value="Ethics-0">1</option>
-							<option value="Ethics-1.5">1.5</option>
-							<option value="Ethics-2">2</option>
-							<option value="Ethics-3">3</option>
-							<option value="Ethics-4">4</option>
-							<option value="Ethics-5">5</option>
-						</select>
-					</label>
-	
-			</div>			
+					Ethics
+					<br>
+					<select id="EthicsDropdown" class="dropdown">
+					</select>
+				</label> -->
+				<button class="btn btn-primary btn-md" id="allvpn">All VPN</button>
+				
+			</div>
 			<div class="row">
+				<select id="JurisdictionDropdown" class="dropdown">
+				</select>
+				<!-- <div class="divider"></div> -->
+				<select id="LoggingDropdown" class="dropdown">
+				</select>
+				<select id="ActivismDropdown" class="dropdown">
+				</select>
+				<select id="ServiceConfigDropdown" class="dropdown">
+				</select>
+				<select id="SecurityDropdown" class="dropdown">
+				</select>
+				<select id="AvailabilityDropdown" class="dropdown">
+				</select>
+				<select id="WebsiteDropdown" class="dropdown">
+				</select>
+				<select id="PricingDropdown" class="dropdown">
+				</select>
+				<select id="EthicsDropdown" class="dropdown">
+				</select>
+
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-md-10">
+					<div class="chart">
+
+					</div>
+				</div>
 				<div class="col-xs-3  col-md-2">
 	  				<div id="metabox" class="panel panel-primary">
 						<div id="metahead" class="panel-heading text-center">
@@ -182,11 +170,6 @@
 	  					<div class="panel-body" id="metadata">
 	  					</div>
 	  				</div>
-				</div>
-				<div class="col-xs-6 col-md-10">
-					<div class="chart">
-
-					</div>
 				</div>
 			</div>
 		</div>

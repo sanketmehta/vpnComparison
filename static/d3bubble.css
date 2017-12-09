@@ -1,5 +1,6 @@
 #metabox {
-  margin-top: 20px;
+  margin-top: 100px;
+  /* margin-left: 1400px; */
 }
 
 .d3-tip {
@@ -56,4 +57,66 @@
   margin: -4px 0 0 -1px;
   top: 50%;
   left: 100%;
+}
+
+.dropdown {
+  margin-top: 50px;
+  background-color: rgb(173, 212, 29);
+}
+
+.divider {
+  width: 60px;
+  height: auto;
+  display: inline-block;
+}
+
+.JurisdictionButton {
+  position: absolute;
+  left: 50px
+}
+
+.LoggingButton {
+  position: absolute;
+  left: 200px
+}
+
+.ActivismButton {
+  position: absolute;
+  left: 350px
+}
+
+.ServiceConfigButton {
+  position: absolute;
+  left: 500px
+}
+
+.SecurityButton {
+  position: absolute;
+  left: 650px
+}
+
+.AvailabilityButton {
+  position: absolute;
+  left: 800px
+}
+
+.WebsiteButton {
+  position: absolute;
+  left: 950px
+}
+
+.PricingButton {
+  position: absolute;
+  left: 1100px
+}
+
+.EthicsButton {
+  position: absolute;
+  left: 1250px
+}
+
+#allvpn{
+  position: absolute;
+  left: 1400px
+  
 }
