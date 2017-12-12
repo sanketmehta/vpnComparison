@@ -1,6 +1,6 @@
 
 d3.queue()
-	.defer(d3.csv, "../../data/vpnCompData_Nov22_test.csv")
+	.defer(d3.json, "/getColumnsByVPN")
 	.await(drawbubble);
 
 function generateColor(x) {
@@ -19,7 +19,7 @@ function updateVPNInfo(vpn, type) {
 
 	if (vpn) {	
 	  if (type === "detail"){
-	  	metahead.innerHTML = vpn["VPN SERVICE"];
+	  	metahead.innerHTML = vpn["VPN_SERVICE"];
 	  } else {
 	  	metahead.innerHTML = "VPN Summary"; 
 	  }
@@ -52,6 +52,7 @@ function addTextToMetadata(label, text, metadata){
   
 function drawbubble(err, datapoints) {
 	// if the SVG area isn't empty when the browser loads, remove it and replace it with a resized version of the chart
+	console.log(datapoints);
 
 	var allSelections;
 	var summaryData = {};
@@ -89,17 +90,17 @@ function drawbubble(err, datapoints) {
 	    .offset([20, -20])
 	    // The html() method allows us to mix JavaScript with HTML in the callback function
 	    .html(function(d) {
-	      	var vpnName = d['VPN SERVICE'];
-	      	var country = d['Country'];
-		    var jurisdiction = +d['Jurisdiction'];
-		    var logging = +d['Logging'];
+	      	var vpnName = d['VPN_SERVICE'];
+	      	var country = d['Based_in_(Country)'];
+		    var monthlyprice = d['$_/_Month_-_(Annual_Pricing)'];
+		    var connectionprice = d['$_/_Connection_/_Month'];
 		    var activism = +d['Activism']
 		    return "<h3 id='tooltip-header'>" + vpnName +
 		        "</h3><hr>" +
 		        country + "<br>" +
-		        ["Jurisdiction", jurisdiction].join(": ") +
+		        ["$/Month (Annual Pricing)", monthlyprice].join(": ") +
 		        "<br>" +		        
-		        ["Logging", logging].join(": ") +
+		        ["$ / Connection / Month", connectionprice].join(": ") +
 		        "<br>" +		        
 		        ["Activism", activism].join(": ");
 	    });
@@ -108,17 +109,14 @@ function drawbubble(err, datapoints) {
 
 	var forceXCombine = d3.forceX(function (d) {
 		return svgWidth/2
-		// return ((svgWidth/7)*5)/ 2
-	// }).strength(0.05)
 	}).strength(0.05)
 
 	var forceYCombine = d3.forceY(function (d) {
 		return svgHeight / 2
-	// }).strength(0.5)
 	}).strength(0.5)
 
 	var forceCollide = d3.forceCollide(function (d) {
-		return radiusScale(d.Jurisdiction) + 5
+		return radiusScale(d['Jurisdiction']) + 5
 	})
 
 	var simultation = d3.forceSimulation()
@@ -127,25 +125,10 @@ function drawbubble(err, datapoints) {
 		.force("collide", forceCollide)
 
 	var forceSplit = d3.forceCollide(function (d) {
-		return radiusScale(d.Jurisdiction) + 15
+		return radiusScale(d['Jurisdiction']) + 15
 	})
 
 	var forceXSplit = d3.forceX(function (d) {
-
-		// categoryArr = [];
-		// subCategoryArr = [];
-
-		// remainingSelections = allSelections;
-
-		// for (i = 0; i < (allSelections.match(/;/g) || []).length; i++) {
-
-		// 	currentSelection = remainingSelections.substring(0, remainingSelections.indexOf(";"));
-		// 	remainingSelections = remainingSelections.substring(remainingSelections.indexOf(";") + 1, remainingSelections.length);
-		// 	categoryArr.push(currentSelection.substring(0, currentSelection.indexOf("-")));
-		// 	subCategoryArr.push(currentSelection.substring(currentSelection.indexOf("-") + 1, currentSelection.length));
-
-		// }
-
 		if (((((d[categoryArr[0]] >= (parseFloat(subCategoryArr[0]))) && (d[categoryArr[0]] < (parseFloat(subCategoryArr[0]) + 0.5)))) || parseFloat(subCategoryArr[0]) == 99) &&
 			((((d[categoryArr[1]] >= (parseFloat(subCategoryArr[1]))) && (d[categoryArr[1]] < (parseFloat(subCategoryArr[1]) + 0.5)))) || parseFloat(subCategoryArr[1]) == 99) &&
 			((((d[categoryArr[2]] >= (parseFloat(subCategoryArr[2]))) && (d[categoryArr[2]] < (parseFloat(subCategoryArr[2]) + 0.5)))) || parseFloat(subCategoryArr[2]) == 99) &&
@@ -171,56 +154,50 @@ function drawbubble(err, datapoints) {
 
 	setfilterArrays();
 	
-		function sorter(a, b) {
-			return a - b;
-		}
-		
-		
-		function setfilterArrays() {
+	function sorter(a, b) {
+		return a - b;
+	}
+
+	function setfilterArrays() {
+		var filtersArr = ["Jurisdiction", "Logging", "Activism", "Service_Config", "Security", "Availability", "Website", "Pricing", "Ethics"]
+
+		d3.selectAll(".option")
+			.remove();
 	
-			var filtersArr = ["Jurisdiction", "Logging", "Activism", "ServiceConfig", "Security", "Availability", "Website", "Pricing", "Ethics"]
-	
-			d3.selectAll(".option")
-				.remove();
-		
-			for (var j = 0; j < filtersArr.length; j++) {
-		
-				dropDwnName = filtersArr[j];
-		
-				if (filtersArr[j] == "ServiceConfig") {
-					dropDwnNameVal = "Service Config";
-				}
-				else {
-					dropDwnNameVal = filtersArr[j];
-				}
-		
-				if (filtersArr[j] == "Website") {
-					eval('var unique' + dropDwnName + 'Values = d3.map(datapoints, function(d){return parseFloat(d["' + dropDwnNameVal + '"]);}).keys().sort(sorter)');
-				}
-				else {
-					eval('var unique' + dropDwnName + 'Values = d3.map(datapoints, function(d){return parseFloat(d["' + dropDwnNameVal + '"]);}).keys().sort()');
-				}
-		
-				eval('unique' + dropDwnName + 'Values.unshift(unique' + dropDwnName + 'Values.pop())');
-		
-		
-				for (var i = 0; i < eval('unique' + dropDwnName + 'Values').length; i++) {
-					val = eval('unique' + dropDwnName + 'Values')[i];
-					txt = eval('unique' + dropDwnName + 'Values')[i];
-					if (isNaN(val)) {
-						val = "99";
-						txt = "All"
-					}
-					d3.select("#" + dropDwnName + "Dropdown").append("option")
-						.attr("class", "option")
-						.attr("value", dropDwnNameVal + "-" + val)
-						.text(txt);
-				}
-		
+		for (var j = 0; j < filtersArr.length; j++) {
+            var filtername = filtersArr[j];
+			var dropDwnNameVal = filtersArr[j];
+
+			if (filtersArr[j] == "Service_Config") {
+				filtername = "ServiceConfig";
+				dropDwnNameVal = "Service Config";
+			}
+
+			dropDwnName = [filtername, "Dropdown"].join("");
+
+			// to sort alphanumeric numbers correctly
+			if (filtername == "Website"){				
+				optvalues = d3.map(datapoints, function(d){return parseFloat(d[dropDwnNameVal]);}).keys().sort(sorter); 
+			} else {				
+				optvalues = d3.map(datapoints, function(d){return parseFloat(d[dropDwnNameVal]);}).keys().sort(); 
+			}
+			
+			console.log(dropDwnName);
+			d3.select("#" + dropDwnName).append("option")
+				.attr("class", "option")
+				.attr("value", "99")
+				.text("All");
+
+			for (var i = 0; i < optvalues.length; i++) {
+				d3.select("#" + dropDwnName).append("option")
+					.attr("class", "option")
+					.attr("value", dropDwnNameVal + "-" + optvalues[i])
+					.text(optvalues[i]);
 			}
 		}
+	}
 	
-  	var countries = d3.map(datapoints, function(d){return d.Country;}).keys()
+  	var countries = d3.map(datapoints, function(d){return d['Based_in_(Country)'];}).keys().sort();
 
   	summarydata = {
   		"Total Countries": countries.length,
@@ -257,7 +234,7 @@ function drawbubble(err, datapoints) {
 			.append("circle")
 			.classed("vpn", true)
 			.attr("r", function (d) {
-				radVal = d.Jurisdiction;
+				radVal = d['Jurisdiction'];
 				if (parseInt(radVal) == 0) {
 					radVal = 0.1;
 				}
@@ -267,10 +244,10 @@ function drawbubble(err, datapoints) {
 				return radiusScale(radVal)
 			})
 			.attr("id", function (d) {
-				return d["VPN SERVICE"].toLowerCase().replace(/ /g, "_")
+				return d["VPN_SERVICE"].toLowerCase().replace(/ /g, "_")
 			})
 			.attr("fill", function(d){
-				return colors[d.Country];
+				return colors[d['Based_in_(Country)']];
 			})
 			.on("click", function (d) {
 		  		// updateVPNInfo(d);
@@ -310,6 +287,8 @@ function drawbubble(err, datapoints) {
 					allSelections = allSelections + this.value + ";";
 	
 				});
+
+			console.log(allSelections);
 	
 			categoryArr = [];
 			subCategoryArr = [];

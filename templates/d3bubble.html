@@ -4,23 +4,13 @@
 <head>	
 	<meta charset='utf-8'>
   	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<!-- Bootstrap CDN -->
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">     -->
-	
+		
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../static/d3bubble.css">
 	
 	<!-- d3 scripts -->
 	<script src="https://d3js.org/d3.v4.js"></script>
 	<script src="https://d3js.org/d3-queue.v3.min.js"></script>
-	<!-- <script src="https://d3js.org/d3-collection.v1.min.js"></script>
-	<script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
-	<script src="https://d3js.org/d3-quadtree.v1.min.js"></script>
-	<script src="https://d3js.org/d3-timer.v1.min.js"></script>
-	<script src="https://d3js.org/d3-force.v1.min.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> -->
-	<!-- <script src="https://d3js.org/d3.v4.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 </head>
 
@@ -29,132 +19,61 @@
 		<div class="container-fluid">
 			<br>
 			<div class="row">
-				<!-- <div class="col-md-3"> -->
-				<!-- <button class="btn btn-primary btn-md" id="allvpn">All VPN</button> -->
-				<!-- </div> -->
-				<!-- </div>
-			<br>
-			<div class="row"> -->
-				<!-- <br> -->
-				<!-- <label for="Jurisdiction">
-					Jurisdiction
-					<br>
-					<select id="JurisdictionDropdown" class="dropdown">
-					</select>
-				</label> -->
-				<button type="button" class="btn btn-primary JurisdictionButton">
-					Jurisdiction
-					<br>
-				</button>
-				<button type="button" class="btn btn-primary LoggingButton">
-					Logging
-					<br>
-				</button>
-				<button type="button" class="btn btn-primary ActivismButton">
-					Activism
-					<br>
-				</button>
-				<button type="button" class="btn btn-primary ServiceConfigButton">
-					Service Config
-					<br>
-				</button>
-				<button type="button" class="btn btn-primary SecurityButton">
-					Security
-					<br>
-				</button>
-				<button type="button" class="btn btn-primary AvailabilityButton">
-					Availability
-					<br>
-				</button>
-				<button type="button" class="btn btn-primary WebsiteButton">
-					Website
-					<br>
-				</button>
-				<button type="button" class="btn btn-primary PricingButton">
-					Pricing
-					<br>
-				</button>
-				<button type="button" class="btn btn-primary EthicsButton">
-					Ethics
-					<br>
-				</button>
-				
-				<!-- <label for="Jurisdiction">
-					Jurisdiction
-					<br>
-					<select id="JurisdictionDropdown" class="dropdown">
-					</select>
-				</label> -->
-				<!-- <label for="Logging">
-					Logging
-					<br>
-				</label>
-				<label for="Activism">
-					Activism
-					<br>
-					<select id="ActivismDropdown" class="dropdown">
-					</select>
-				</label>
-				<label for="Service Config">
-					Service Config
-					<br>
-					<select id="ServiceConfigDropdown" class="dropdown">
-					</select>
-				</label>
-				<label for="Security">
-					Security
-					<br>
-					<select id="SecurityDropdown" class="dropdown">
-					</select>
-				</label>
-				<label for="Availability">
-					Availability
-					<br>
-					<select id="AvailabilityDropdown" class="dropdown">
-					</select>
-				</label>
-				<label for="Website">
-					Website
-					<br>
-					<select id="WebsiteDropdown" class="dropdown">
-					</select>
-				</label>
-				<label for="Pricing">
-					Pricing
-					<br>
-					<select id="PricingDropdown" class="dropdown">
-					</select>
-				</label>
-				<label for="Ethics">
-					Ethics
-					<br>
-					<select id="EthicsDropdown" class="dropdown">
-					</select>
-				</label> -->
-				<button class="btn btn-primary btn-md" id="allvpn">All VPN</button>
-				
-			</div>
-			<div class="row">
-				<select id="JurisdictionDropdown" class="dropdown">
-				</select>
-				<!-- <div class="divider"></div> -->
-				<select id="LoggingDropdown" class="dropdown">
-				</select>
-				<select id="ActivismDropdown" class="dropdown">
-				</select>
-				<select id="ServiceConfigDropdown" class="dropdown">
-				</select>
-				<select id="SecurityDropdown" class="dropdown">
-				</select>
-				<select id="AvailabilityDropdown" class="dropdown">
-				</select>
-				<select id="WebsiteDropdown" class="dropdown">
-				</select>
-				<select id="PricingDropdown" class="dropdown">
-				</select>
-				<select id="EthicsDropdown" class="dropdown">
-				</select>
-
+				<div class="panel panel-default">
+					<div class="panel-body" >											
+						<div class="navbar-form navbar-left">				  
+						  <div class="form-group">				  	
+						  	<!-- <button class="btn btn-primary btn-md" id="allvpn">All VPN</button> -->
+						  	<button class="btn btn-primary btn-md" id="allvpn">Reset</button>
+						  </div>
+						  <div class="form-group">
+							  <label for="JurisdictionDropdown" class="dropdownlabel">Jurisdiction: </label>
+							  <select class="form-control dropdown" id="JurisdictionDropdown" >
+							  </select>
+						  </div>
+						  <div class="form-group">
+							  <label for="LoggingDropdown" class="dropdownlabel">Logging: </label>
+							  <select class="form-control dropdown" id="LoggingDropdown" >
+							  </select>
+						  </div>
+						  <div class="form-group">
+							  <label for="ActivismDropdown" class="dropdownlabel">Activism: </label>
+							  <select class="form-control dropdown" id="ActivismDropdown" >
+							  </select>
+						  </div>
+						  <div class="form-group">
+							  <label for="ServiceConfigDropdown" class="dropdownlabel">Service Config</label>
+							  <select class="form-control dropdown" id="ServiceConfigDropdown" >
+							  </select>
+						  </div>
+						  <div class="form-group">
+							  <label for="SecurityDropdown" class="dropdownlabel">Security</label>
+							  <select class="form-control dropdown" id="SecurityDropdown" >
+							  </select>
+						  </div>
+						  <div class="form-group">
+							  <label for="AvailabilityDropdown" class="dropdownlabel">Availability</label>
+							  <select class="form-control dropdown" id="AvailabilityDropdown" >
+							  </select>
+						  </div>
+						  <div class="form-group">
+							  <label for="WebsiteDropdown" class="dropdownlabel">Website</label>
+							  <select class="form-control dropdown" id="WebsiteDropdown" >
+							  </select>
+						  </div>
+						  <div class="form-group">
+							  <label for="PricingDropdown" class="dropdownlabel">Pricing</label>
+							  <select class="form-control dropdown" id="PricingDropdown" >
+							  </select>
+						  </div>
+						  <div class="form-group">
+							  <label for="EthicsDropdown" class="dropdownlabel">Ethics</label>
+							  <select class="form-control dropdown" id="EthicsDropdown" >
+							  </select>
+						  </div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-xs-6 col-md-10">

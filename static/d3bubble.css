@@ -1,6 +1,5 @@
 #metabox {
-  margin-top: 100px;
-  /* margin-left: 1400px; */
+  margin-top: 10px;
 }
 
 .d3-tip {
@@ -59,9 +58,11 @@
   left: 100%;
 }
 
-.dropdown {
-  margin-top: 50px;
-  background-color: rgb(173, 212, 29);
+.dropdownlabel {
+  margin-right: 10px;
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .divider {
@@ -70,53 +71,11 @@
   display: inline-block;
 }
 
-.JurisdictionButton {
-  position: absolute;
-  left: 50px
-}
-
-.LoggingButton {
-  position: absolute;
-  left: 200px
-}
-
-.ActivismButton {
-  position: absolute;
-  left: 350px
-}
-
-.ServiceConfigButton {
-  position: absolute;
-  left: 500px
-}
-
-.SecurityButton {
-  position: absolute;
-  left: 650px
-}
-
-.AvailabilityButton {
-  position: absolute;
-  left: 800px
-}
-
-.WebsiteButton {
-  position: absolute;
-  left: 950px
-}
-
-.PricingButton {
-  position: absolute;
-  left: 1100px
-}
-
-.EthicsButton {
-  position: absolute;
-  left: 1250px
+.panel {
+  background-color: lightblue;
 }
 
 #allvpn{
-  position: absolute;
-  left: 1400px
+   margin-right: 30px;
   
 }
