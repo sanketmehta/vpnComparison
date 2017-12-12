@@ -131,6 +131,21 @@ def getColumns():
     
     return jsonify(dict1)
 
+# Route to get the all columns By VPN 
+@app.route('/getColumnsByVPN', methods=['POST','GET'])
+def getColumnsbyVPN():
+    results = session.query(vpnMaster).all()
+
+    collist = []
+    for x in results:
+        r = {}
+        for k,v in x.__dict__.items():
+            if(("_sa_instance_state" != k)):
+                r[k] = v
+        collist.append(r)
+
+    return jsonify(collist)
+
 
 @app.route("/countryMap")
 def country():
