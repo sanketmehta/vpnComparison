@@ -16,7 +16,8 @@ app = Flask(__name__)
 # sqlite connection
 #################################################
 
-engine = create_engine("sqlite:///data/vpnCompare.sqlite", echo=False)
+engine = create_engine('mysql://p8j4q9u7itbc9epz:zlyrdub556dhg5hz@ffn96u87j5ogvehy.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/ml0vnaijudbhqrn0')
+
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 vpnMaster = Base.classes.vpn_master

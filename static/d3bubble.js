@@ -13,37 +13,36 @@ function generateColor(x) {
   }
   
 function updateVPNInfo(vpn, type) {
-	var metahead = document.querySelector("#metahead");	
+	var myColList = ['Based_in_(Country)','"Fourteen Eyes"_Country','Enemy_of_the_Internet','Traffic','Timestamps','IP_Address','Anonymous_Payment_Method','Accepts_Bitcoin','Offers_OpenVPN','#_of_Simultaneous_Connections','#_of_Countries','#_of_Servers','$_/_Month_-_(Annual_Pricing)','$_/_Connection_/_Month','Free_Trial_Available','Refund_Window_(Days)','Server_SSL_Rating','Forbids_spam'];
+	var metahead = document.querySelector("#metahead");
 	var metadata = document.querySelector("#metadata");
 	metadata.innerHTML = "";
 
-	if (vpn) {	
-	  if (type === "detail"){
-	  	metahead.innerHTML = vpn["VPN_SERVICE"];
-	  } else {
-	  	metahead.innerHTML = "VPN Summary"; 
-	  }
+	if (vpn) {
+		if (type === "detail") {
+			metahead.innerHTML = vpn["VPN_SERVICE"];
+		} else {
+			metahead.innerHTML = "VPN Summary";
+			for(k in summarydata){
+				var v = summarydata[k];
+				addTextToMetadata(k, v, metadata);
+			}
+		}
 
-	  for(var key in vpn) {
-	  	switch (key){
-	  		case "VPN SERVICE":
-	  		case "index":
-	  		case "vx":
-	  		case "vy":
-	  		case "x":
-	  		case "y":
-	  			break;
-	  		default:
-		    	var value = vpn[key];
-			    addTextToMetadata(key, value, metadata);
-	  			break;
-	  	}
-	  }
-	} 
+		
+		for (var key in vpn) {
+			for (a=0;a<myColList.length;a++) {
+				if ((myColList[a] == key)){
+					var value = vpn[key];
+					addTextToMetadata(key, value, metadata);
+
+				}
+			}
+		}
+	}
 }
 
 function addTextToMetadata(label, text, metadata){
-	console.log(label + ": " +  text);
 	var para = document.createElement("p");                // Create a <p> element
   	var t = document.createTextNode(label + ": " +  text);  // Create a text node
   	para.appendChild(t);                                   // Append the text to <p>
@@ -52,7 +51,6 @@ function addTextToMetadata(label, text, metadata){
   
 function drawbubble(err, datapoints) {
 	// if the SVG area isn't empty when the browser loads, remove it and replace it with a resized version of the chart
-	console.log(datapoints);
 
 	var allSelections;
 	var summaryData = {};
@@ -65,13 +63,11 @@ function drawbubble(err, datapoints) {
 
 	var svgWidth = window.innerWidth *4/5;
 	var svgHeight = window.innerHeight *4/5;
-	// console.log(svgWidth);
 
 	// set up margin and chart dimensions
 	var margin = { top: 100, right: 20, bottom: 100, left: 80 };
 	var chart_width = svgWidth - margin.left - margin.right,
 		chart_height = svgHeight - margin.top - margin.bottom;
-
 
 	// Create the graph canvas
 	var svg = d3
@@ -83,27 +79,30 @@ function drawbubble(err, datapoints) {
 		.attr("transform", "translate(0,0)");
 
 	// Initialize tooltip
-	  var toolTip = d3
-	    .tip()
-	    .attr("class", "d3-tip")
-	    // Define position
-	    .offset([20, -20])
-	    // The html() method allows us to mix JavaScript with HTML in the callback function
-	    .html(function(d) {
-	      	var vpnName = d['VPN_SERVICE'];
-	      	var country = d['Based_in_(Country)'];
-		    var monthlyprice = d['$_/_Month_-_(Annual_Pricing)'];
-		    var connectionprice = d['$_/_Connection_/_Month'];
-		    var activism = +d['Activism']
-		    return "<h3 id='tooltip-header'>" + vpnName +
-		        "</h3><hr>" +
-		        country + "<br>" +
-		        ["$/Month (Annual Pricing)", monthlyprice].join(": ") +
-		        "<br>" +		        
-		        ["$ / Connection / Month", connectionprice].join(": ") +
-		        "<br>" +		        
-		        ["Activism", activism].join(": ");
-	    });
+	var toolTip = d3
+		.tip()
+		.attr("class", "d3-tip")
+		// Define position
+		.offset([20, -20])
+		// The html() method allows us to mix JavaScript with HTML in the callback function
+		.html(function (d) {
+			var vpnName = d['VPN_SERVICE'];
+			var country = d['Based_in_(Country)'];
+			var logging = +d['Logging'];
+			var jurisdiction = +d['Jurisdiction'];
+			var security = +d['Security'];
+			var pricing = +d['Pricing'];
+			return "<h3 id='tooltip-header'>" + vpnName +
+				"</h3><hr>" +
+				["Located In", country].join(": ") + "<br>" +
+				["Logging", logging].join(": ") +
+				"<br>" +
+				["Jurisdiction", jurisdiction].join(": ") +
+				"<br>" +
+				["Security", security].join(": ") +
+				"<br>" +
+				["Pricing", pricing].join(": ");
+		});
 
 	svg.call(toolTip);
 
@@ -182,7 +181,6 @@ function drawbubble(err, datapoints) {
 				optvalues = d3.map(datapoints, function(d){return parseFloat(d[dropDwnNameVal]);}).keys().sort(); 
 			}
 			
-			console.log(dropDwnName);
 			d3.select("#" + dropDwnName).append("option")
 				.attr("class", "option")
 				.attr("value", "99")
@@ -217,12 +215,10 @@ function drawbubble(err, datapoints) {
 		var rmin = d3.min(datapoints, function (d) {
 			return parseFloat(d["Jurisdiction"]);
 		});
-		console.log(rmin);
 
 		var rmax = d3.max(datapoints, function (d) {
 			return parseFloat(d["Jurisdiction"]);
 		});
-		console.log(rmax);
 
 		radiusScale = d3.scaleSqrt()
 			.domain([rmin, rmax])
@@ -250,7 +246,6 @@ function drawbubble(err, datapoints) {
 				return colors[d['Based_in_(Country)']];
 			})
 			.on("click", function (d) {
-		  		// updateVPNInfo(d);
 			  toolTip.show(d);
 			})
 			.on("mouseover", function (d) {
@@ -258,7 +253,6 @@ function drawbubble(err, datapoints) {
 		  	  updateVPNInfo(d, "detail");
 			})		
 			.on("mouseout", function (d) {
-		  	  
 			  // pass summary information
 			  updateVPNInfo(summarydata,"summary");
 			  toolTip.hide(d);
@@ -287,8 +281,6 @@ function drawbubble(err, datapoints) {
 					allSelections = allSelections + this.value + ";";
 	
 				});
-
-			console.log(allSelections);
 	
 			categoryArr = [];
 			subCategoryArr = [];
