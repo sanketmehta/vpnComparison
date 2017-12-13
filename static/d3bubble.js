@@ -65,9 +65,9 @@ function drawbubble(err, datapoints) {
 	var svgHeight = window.innerHeight *4/5;
 
 	// set up margin and chart dimensions
-	var margin = { top: 100, right: 20, bottom: 100, left: 80 };
-	var chart_width = svgWidth - margin.left - margin.right,
-		chart_height = svgHeight - margin.top - margin.bottom;
+	var margin = { top: 0, right: 20, bottom: 100, left: 80 };
+	// var chart_width = svgWidth - margin.left - margin.right,
+	// 	chart_height = svgHeight - margin.top - margin.bottom;
 
 	// Create the graph canvas
 	var svg = d3
@@ -111,7 +111,7 @@ function drawbubble(err, datapoints) {
 	}).strength(0.05)
 
 	var forceYCombine = d3.forceY(function (d) {
-		return svgHeight / 2
+		return svgHeight / 3.5
 	}).strength(0.5)
 
 	var forceCollide = d3.forceCollide(function (d) {
@@ -146,7 +146,7 @@ function drawbubble(err, datapoints) {
 	}).strength(0.008)
 
 	var forceYSplit = d3.forceY(function (d) {
-		return svgHeight / 2
+		return svgHeight / 3.5
 	}).strength(0.02)
 
 	console.log(datapoints.length);

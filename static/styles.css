@@ -2,3 +2,17 @@ canvas {
   width: 800px !important;
   height: 500px !important;
 }
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /*position: relative;
+  width: 960px;*/
+}
+
+.jumbotron {
+  background-color: #337ab7;
+}
+
+#title {
+  color: white;
+}

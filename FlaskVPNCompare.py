@@ -35,6 +35,12 @@ def default():
     return render_template("index.html")
     # Default route to render index.html
 
+@app.route("/indexbubble")
+def defaultindex():
+
+    return render_template("indexbubble.html")
+    # Default route to render index.html
+
 @app.route("/d3bubble")
 def bubble():
 
