@@ -53,8 +53,11 @@ d3.json(queryURL, function (error, response) {
       var table = $('#example').DataTable(
         {
           'rowCallback': function (row, data, index) {
-            for (a = 0; a < 10; a++) {
-              $('td:eq(' + a + ')', row).html('<b>' + data[a] + '</b>');
+              for (a = 0; a < 10; a++) {
+              // $('td:eq(' + a + ')', row).html('<b>' + data[a] + '</b>');
+              // $('td:eq(' + a + ')', row).html('<b>' + data[a] + '</b>');
+              
+              // $('td:eq(' + a + ')', row).style.fontWeight="bold";
               if (data[a] <= 1) {
                 $(row).find('td:eq(' + a + ')').css('color', 'green');
               }
@@ -69,6 +72,31 @@ d3.json(queryURL, function (error, response) {
               }
             }
           },
+          initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                if($(this.header()).text() == "VPN_SERVICE"){}
+                else{
+                var select = $('<select><option value="">All</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    // console.log('start'+d+'end');
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+
+              }
+            } );
+        },
           colReorder: {
             order: [8, 3, 4, 2, 5, 6, 9, 1, 0, 7]
           }
@@ -78,8 +106,12 @@ d3.json(queryURL, function (error, response) {
       // Setup - add a text input to each footer cell
       $('#example tfoot tr td').each(function () {
         var title = $(this).text();
+        if(title == "VPN_SERVICE"){
         $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        }
       });
+
+
 
       // Apply the search
       table.columns().every(function () {
@@ -95,19 +127,47 @@ d3.json(queryURL, function (error, response) {
                 // .search( searchTerm, true, false )
                 .draw();
             }
-            else {
-              searchTerm = '^' + this.value + '$';
-              if (searchTerm == "^$") {
-                searchTerm = '.*'
-              }
-              that
-                // .search( this.value )
-                .search(searchTerm, true, false)
-                .draw();
-            }
+            // else {
+            //   searchTerm = '^' + this.value + '$';
+            //   if (searchTerm == "^$") {
+            //     searchTerm = '.*'
+            //   }
+            //   that
+            //     // .search( this.value )
+            //     .search(searchTerm, true, false)
+            //     .draw();
+            // }
           }
+
+
+          $('td').each(function (cell) {
+            if (this.innerText <= 1) {
+              this.style.color="green";
+            }
+            else if (this.innerText < 3) {
+              this.style.color="orange";
+            }
+            else if (this.innerText < 10) {
+              this.style.color="red";
+            }
+            else {
+              this.style.color="black";
+            }
+            // this.style.fontWeight="bold";
+            
+          });
+  
+
+
+
         });
+
+        $('tbody').each(function () {
+          this.style.fontWeight="bold";
+        });
+
       });
+
 
 
     });

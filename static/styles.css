@@ -16,3 +16,11 @@ body {
 #title {
   color: white;
 }
+
+.d3bubble {
+  height: 800px;
+}
+
+.dataTables1 {
+  height: 1200px;
+}

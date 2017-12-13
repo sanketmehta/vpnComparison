@@ -35,11 +35,6 @@ def default():
     return render_template("index.html")
     # Default route to render index.html
 
-@app.route("/indexbubble")
-def defaultindex():
-
-    return render_template("indexbubble.html")
-    # Default route to render index.html
 
 @app.route("/d3bubble")
 def bubble():
@@ -53,11 +48,6 @@ def default1():
 
     return render_template("dataTables.html")
 
-# Default route to charts html page
-@app.route("/charts")
-def default2():
-
-    return render_template("chartJS.html")
 
 # Route to get the list of all VPNs
 @app.route('/vpnNames', methods=['POST','GET'])
@@ -83,34 +73,12 @@ def simpleCompareData():
                 if('index' in k or 'Unnamed:_10' in k or 'index' in k):
                     pass
                 elif('Jurisdiction' in k or 'VPN_SERVICE' in k or 'Logging' == k or 'Activism' in k or 'Service_Config' in k or 'Security' in k or 'Availability' in k or 'Website' in k or 'Pricing' == k or 'Ethics' in k):
-                    dict2[k] = v
+                    dict2[k] = v.strip()
                     
         list1.append(dict2)
 
     return jsonify(list1)
 
-
-# Route to get the metadata for a specific VPN
-@app.route('/vpnData/<vpnName>', methods=['POST','GET'])
-def vpnData(vpnName):
-
-    results = session.query(vpnMaster).filter(vpnMaster.VPN_SERVICE == vpnName).all()
-
-    dict1 = {}
-    for k,v in results[0].__dict__.items():
-        if(("$" in k) or ("#" in k)):
-            if(("$" in k)):
-                k = "Dollar" + k[1:]
-            else:
-                k = "Number" + k[1:]
-        
-        if(("_sa_instance_state" != k)):
-            if('index' in k or 'Unnamed:_10' in k or 'index' in k):
-                pass
-            else:
-                dict1[k] = v
-
-    return jsonify(dict1)
 
 
 # Route to get the all/defined columns data 
@@ -154,10 +122,6 @@ def getColumnsbyVPN():
     return jsonify(collist)
 
 
-@app.route("/countryMap")
-def country():
-
-    return render_template("countryMap.html")
 
 
 # Initiate the Flask app
