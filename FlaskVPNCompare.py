@@ -48,6 +48,12 @@ def default1():
 
     return render_template("dataTables.html")
 
+# Route to render simpleComparison html page
+@app.route("/countrymarkers")
+def default2():
+
+    return render_template("countryMarker.html")
+
 
 # Route to get the list of all VPNs
 @app.route('/vpnNames', methods=['POST','GET'])
