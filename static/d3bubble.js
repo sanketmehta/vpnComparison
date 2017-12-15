@@ -216,7 +216,7 @@ function drawbubble(err, datapoints) {
 			for (var i = 0; i < optvalues.length; i++) {
 				d3.select("#" + dropDwnName).append("option")
 					.attr("class", "option")
-					.attr("value", filtername + "-" + optvalues[i])
+					.attr("value", dropDwnNameVal + "-" + optvalues[i])
 					.text(optvalues[i]);
 			}
 		}
