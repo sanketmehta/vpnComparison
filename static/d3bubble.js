@@ -20,7 +20,7 @@ function updateVPNInfo(vpn, type) {
 
 	if (vpn) {
 		if (type === "detail") {
-			metahead.innerHTML = vpn["VPN_SERVICE"];
+			metahead.innerHTML = vpn["VPN_SERVICE"] + " Details";
 		} else {
 			metahead.innerHTML = "VPN Summary";
 			for(k in summarydata){

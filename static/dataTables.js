@@ -5,7 +5,8 @@ var $tfoot = document.querySelector("tfoot");
 
 var filteredData = [];
 
-queryURL = 'http://localhost:5000/simpleCompareData';
+queryURL = '/simpleCompareData';
+
 
 d3.json(queryURL, function (error, response) {
   if (error) {
@@ -64,7 +65,7 @@ d3.json(queryURL, function (error, response) {
               else if (data[a] < 3) {
                 $(row).find('td:eq(' + a + ')').css('color', 'orange');
               }
-              else if (data[a] < 10) {
+              else if (data[a] < 25) {
                 $(row).find('td:eq(' + a + ')').css('color', 'red');
               }
               else {
@@ -147,7 +148,7 @@ d3.json(queryURL, function (error, response) {
             else if (this.innerText < 3) {
               this.style.color="orange";
             }
-            else if (this.innerText < 10) {
+            else if (this.innerText < 25) {
               this.style.color="red";
             }
             else {

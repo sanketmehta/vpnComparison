@@ -10,17 +10,28 @@
 	<link rel="stylesheet" type="text/css" href='{{ url_for("static", filename="styles.css") }}'>
 
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> -->
+	<title>VPN Comparison</title>
 </head>
 
 <body>
 	<div class="container-fluid">
 		<div class="jumbotron text-center" id="title">
-			<h1>
-				<strong>VPN Comparison Dashboard</strong>
-			</h1>
-			<p>Use the interactive chart below to explore the dataset
-			</p>
-
+				<h1>
+					<strong>VPN Comparison Dashboard</strong>
+				</h1>
+				<p>Use the interactive charts below to find a suitable VPN Service 
+				</p>
+				<p>
+					<small>To see what each filter field mean and how it is calculated, refer to this link
+						<a href="https://thatoneprivacysite.net/vpn-chart-formulas/">
+							<strong style="color:white;">here</strong>
+						</a>. For description on all fields in VPN Detail section, refer to this link
+						<a href="https://thatoneprivacysite.net/vpn-glossary/">
+							<strong style="color:white;">here</strong>
+						</a>
+					</small>
+				</p>
 		</div>
 
 		<div class="container-fluid">
@@ -58,8 +69,9 @@
 				<a href="https://thatoneprivacysite.net/">That One Privacy Site</a>, for the purpose of Data Science and Web Development Training Project.</small>
 		</p>
 		<p class="text-center">
-			<small>VPN Comparison Data version is from 22-Nov-2017 update and has not been modified, but used for data visualizations and
-				charts.</small>
+			<small>VPN Comparison Data version is from 12-Dec-2017 update and has not been modified, but used for data visualizations and
+				charts.
+			</small>
 		</p>
 		<p class="text-center">
 			<small>Contact: workingindataanalysis@gmail.com</small>
