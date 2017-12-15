@@ -42,6 +42,19 @@ function updateVPNInfo(vpn, type) {
 	}
 }
 
+function summaryVPNInfo(countriesArray, bubbleCount){
+  	summarydata = {
+  		"Total Countries": countriesArray.length,
+  		"Total VPNs": bubbleCount //datapoints.length 
+  	}
+
+  	console.log(summarydata);
+
+  	// pass summary information
+  	updateVPNInfo(summarydata,"summary");
+
+}
+
 function addTextToMetadata(label, text, metadata){
 	var para = document.createElement("p");                // Create a <p> element
   	var t = document.createTextNode(label + ": " +  text);  // Create a text node
@@ -127,7 +140,16 @@ function drawbubble(err, datapoints) {
 		return radiusScale(d['Jurisdiction']) + 15
 	})
 
-	var forceXSplit = d3.forceX(function (d) {
+  	var countries = d3.map(datapoints, function(d){return d['Based_in_(Country)'];}).keys().sort();	
+	var bubbleCount = datapoints.length;
+	var countryArr = countries;
+
+
+	var forceXSplit = d3.forceX(function (d, i) {
+		if (i==0){
+			bubbleCount = 0;
+			countryArr = [];
+		}
 		if (((((d[categoryArr[0]] >= (parseFloat(subCategoryArr[0]))) && (d[categoryArr[0]] < (parseFloat(subCategoryArr[0]) + 0.5)))) || parseFloat(subCategoryArr[0]) == 99) &&
 			((((d[categoryArr[1]] >= (parseFloat(subCategoryArr[1]))) && (d[categoryArr[1]] < (parseFloat(subCategoryArr[1]) + 0.5)))) || parseFloat(subCategoryArr[1]) == 99) &&
 			((((d[categoryArr[2]] >= (parseFloat(subCategoryArr[2]))) && (d[categoryArr[2]] < (parseFloat(subCategoryArr[2]) + 0.5)))) || parseFloat(subCategoryArr[2]) == 99) &&
@@ -138,6 +160,10 @@ function drawbubble(err, datapoints) {
 			((((d[categoryArr[7]] >= (parseFloat(subCategoryArr[7]))) && (d[categoryArr[7]] < (parseFloat(subCategoryArr[7]) + 0.5)))) || parseFloat(subCategoryArr[7]) == 99) &&
 			((((d[categoryArr[8]] >= (parseFloat(subCategoryArr[8]))) && (d[categoryArr[8]] < (parseFloat(subCategoryArr[8]) + 0.5)))) || parseFloat(subCategoryArr[8]) == 99)
 		) {
+			bubbleCount += 1;
+			if (countryArr.indexOf(d['Based_in_(Country)']) < 0){
+				countryArr.push(d['Based_in_(Country)']);
+			}
 			return svgWidth / 2;
 		} else {
 			return 4000;
@@ -145,11 +171,12 @@ function drawbubble(err, datapoints) {
 
 	}).strength(0.008)
 
+	console.log(bubbleCount);
+
 	var forceYSplit = d3.forceY(function (d) {
 		return svgHeight / 3.5
 	}).strength(0.02)
 
-	console.log(datapoints.length);
 
 	setfilterArrays();
 	
@@ -169,7 +196,7 @@ function drawbubble(err, datapoints) {
 
 			if (filtersArr[j] == "Service_Config") {
 				filtername = "ServiceConfig";
-				dropDwnNameVal = "Service Config";
+				dropDwnNameVal = "Service_Config";
 			}
 
 			dropDwnName = [filtername, "Dropdown"].join("");
@@ -189,21 +216,16 @@ function drawbubble(err, datapoints) {
 			for (var i = 0; i < optvalues.length; i++) {
 				d3.select("#" + dropDwnName).append("option")
 					.attr("class", "option")
-					.attr("value", dropDwnNameVal + "-" + optvalues[i])
+					.attr("value", filtername + "-" + optvalues[i])
 					.text(optvalues[i]);
 			}
 		}
 	}
-	
-  	var countries = d3.map(datapoints, function(d){return d['Based_in_(Country)'];}).keys().sort();
 
-  	summarydata = {
-  		"Total Countries": countries.length,
-  		"Total VPNs": datapoints.length 
-  	}
 
-  	// pass summary information
-  	updateVPNInfo(summarydata,"summary");
+
+	summaryVPNInfo(countries, bubbleCount);
+
 
   	var colors = {};
 
@@ -295,13 +317,16 @@ function drawbubble(err, datapoints) {
 				subCategoryArr.push(currentSelection1.substring(currentSelection1.indexOf("-") + 1, currentSelection1.length));
 	
 			}
-	
+
 			if ((parseFloat(subCategoryArr[0]) == 99) && (parseFloat(subCategoryArr[1]) == 99) &&
 				(parseFloat(subCategoryArr[2]) == 99) && (parseFloat(subCategoryArr[3]) == 99) &&
 				(parseFloat(subCategoryArr[4]) == 99) && (parseFloat(subCategoryArr[5]) == 99) &&
 				(parseFloat(subCategoryArr[6]) == 99) && (parseFloat(subCategoryArr[7]) == 99) &&
 				(parseFloat(subCategoryArr[8]) == 99)
 			) {
+
+				bubbleCount = datapoints.length;
+				countryArr = countries;
 				simultation
 					.force("x", forceXCombine)
 					.force("y", forceYCombine)
@@ -310,6 +335,9 @@ function drawbubble(err, datapoints) {
 					.restart()
 			}
 			else {
+
+				bubbleCount = 0;
+				countryArr = [];
 				simultation
 					.force("x", forceXSplit)
 					.force("y", forceYSplit)
@@ -317,13 +345,19 @@ function drawbubble(err, datapoints) {
 					.alphaTarget(0.7)
 					.restart()
 			}
-	
 
+			summaryVPNInfo(countryArr, bubbleCount);
 		})
 
 
 	d3.select("#allvpn").on("click", function () {
 		setfilterArrays();
+		bubbleCount = datapoints.length;
+		countryArr = countries;
+
+
+		summaryVPNInfo(countryArr, bubbleCount);
+		
 		simultation
 			.force("x", forceXCombine)
 			.force("y", forceYCombine)
