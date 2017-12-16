@@ -3,13 +3,20 @@ body {
     margin: 0;
   }
   
-  #map,
-  body,
-  html {
-    height: 100%;
-  }
-  
-  h1 {
-    text-align: center;
-  }
+#map,
+body,
+html {
+  height: 100%;
+}
+
+h1 {
+  text-align: center;
+}
+
+  /* css to customize Leaflet default styles  */
+.custom .leaflet-popup-tip,
+.custom .leaflet-popup-content-wrapper {
+    background: #337ab7;
+    color: #ffffff;
+}
   

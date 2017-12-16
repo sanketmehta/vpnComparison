@@ -42,6 +42,7 @@ d3.json(queryURL, function(error, response)  {
    var vpnService = response["VPN_SERVICE"]
    var Jurisdiction = response["Jurisdiction"]
    var monthlyPrice = response["$_/_Month_-_(Annual_Pricing)"]
+   var servers = response["#_of_Servers"]
    var countriesDict = {};
    var countryCtr = 0;
    var long = 0.0;
@@ -54,6 +55,7 @@ d3.json(queryURL, function(error, response)  {
         var vpn = vpnService[i];
         var jurisdiction = Jurisdiction[i];
         var price = monthlyPrice[i];
+        var server = servers[i];
 
         // loop through list created from csv
         for(j = 0; j < countriesLocation.length; j++){
@@ -88,10 +90,27 @@ d3.json(queryURL, function(error, response)  {
                     long = countriesLocation[j][0].LongLat[0];
                 }
 
+                // create popup contents
+                var customPopup = "<h3>" + vpn + "</h3><hr><h6>Country: " 
+                      + address + "</h6> <h6>Jurisdiction: " + jurisdiction + "</h6>"                      
+                      + "<h6># of Servers: " + server + "</h6>"
+                      + "<h6>Price: " + price + "</h6>";
+                
+                // specify popup options 
+                var customOptions =
+                    {
+                    'maxWidth': '500',
+                    'className' : 'custom'
+                    }
+
+               // L.marker([lat, long], {icon: shieldIcon})
+               // .bindPopup("<h1>" + vpn + "</h1> <hr> <h3>VPN Service: " 
+               //        + address + "</h3> <h3>Jurisdiction: " + jurisdiction + "</h3>"
+               //        + "<h3>Price: " + price + "</h3>")
+               // .addTo(myMap);
+
                L.marker([lat, long], {icon: shieldIcon})
-               .bindPopup("<h1>" + address + "</h1> <hr> <h3>VPN Service: " 
-                      + vpn + "</h3> <h3>Jurisdiction: " + jurisdiction + "</h3>"
-                      + "<h3>Price: " + price + "</h3>")
+               .bindPopup(customPopup, customOptions)
                .addTo(myMap);
             }
         }  
